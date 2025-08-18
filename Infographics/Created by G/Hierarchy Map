@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognitive Domain Operations Hierarchy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #b0b9d6;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .hierarchy {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .level {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .level:hover {
+            background: rgba(255, 255, 255, 0.98);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+        }
+        
+        .level-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .level-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .strategic .level-icon {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+        }
+        
+        .operational .level-icon {
+            background: linear-gradient(135deg, #ff9800, #ffc107);
+        }
+        
+        .tactical .level-icon {
+            background: linear-gradient(135deg, #4caf50, #8bc34a);
+        }
+        
+        .technical .level-icon {
+            background: linear-gradient(135deg, #2196f3, #03a9f4);
+        }
+        
+        .level-title {
+            flex: 1;
+        }
+        
+        .strategic .level-title h2 {
+            color: #e91e63;
+        }
+        
+        .operational .level-title h2 {
+            color: #ff9800;
+        }
+        
+        .tactical .level-title h2 {
+            color: #4caf50;
+        }
+        
+        .technical .level-title h2 {
+            color: #2196f3;
+        }
+        
+        .level-title h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .level-title p {
+            color: #4a5578;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+        
+        .components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .component-group {
+            background: rgba(245, 247, 252, 1);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(200, 210, 230, 0.5);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .component-group:hover {
+            background: rgba(250, 251, 255, 1);
+            border-color: rgba(100, 120, 180, 0.3);
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        .strategic .component-group h3 {
+            color: #e91e63;
+        }
+        
+        .operational .component-group h3 {
+            color: #ff9800;
+        }
+        
+        .tactical .component-group h3 {
+            color: #4caf50;
+        }
+        
+        .technical .component-group h3 {
+            color: #2196f3;
+        }
+        
+        .component-group h3 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        
+        .strategic .component-group h3::before {
+            color: #f44336;
+        }
+        
+        .operational .component-group h3::before {
+            color: #ffc107;
+        }
+        
+        .tactical .component-group h3::before {
+            color: #8bc34a;
+        }
+        
+        .technical .component-group h3::before {
+            color: #03a9f4;
+        }
+        
+        .component-group h3::before {
+            content: '▸';
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .component-group:hover h3::before {
+            transform: translateX(5px);
+        }
+        
+        .component-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .strategic .component-item {
+            border-left-color: #e91e63;
+        }
+        
+        .operational .component-item {
+            border-left-color: #ffc107;
+        }
+        
+        .tactical .component-item {
+            border-left-color: #8bc34a;
+        }
+        
+        .technical .component-item {
+            border-left-color: #03a9f4;
+        }
+        
+        .component-item:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateX(5px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .component-item h4 {
+            color: #1a2847;
+            font-size: 1em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .component-item p {
+            color: #2d3e50;
+            font-size: 0.9em;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+        
+        .flow-indicator {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            margin: -15px auto;
+            position: relative;
+            z-index: 1;
+            animation: flow 2s ease-in-out infinite;
+        }
+        
+        @keyframes flow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .components {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .level-title h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cognitive Domain Operations</h1>
+        <p class="subtitle">China's Framework for Modern Technology Driven Cognitive Warfare</p>
+        
+        <div class="hierarchy">
+            <!-- Strategic Level -->
+            <div class="level strategic">
+                <div class="level-header">
+                    <div class="level-icon">🎯</div>
+                    <div class="level-title">
+                        <h2>Strategic Level</h2>
+                        <p>High-level planning and resource allocation for cognitive warfare</p>
+                    </div>
+                </div>
+                <div class="components">
+                    <div class="component-group">
+                        <h3>Cognitive Warfare Strategy</h3>
+                        <div class="component-item">
+                            <h4>Cognitive Objectives</h4>
+                            <p>Defining goals for influencing, disrupting, or exploiting adversarial cognitive processes</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Cognitive Threat Assessment</h4>
+                            <p>Identifying potential adversaries and their cognitive vulnerabilities</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Resource Allocation</h4>
+                            <p>Determining allocation of human, technological, and informational resources for CDO</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flow-indicator"></div>
+            
+            <!-- Operational Level -->
+            <div class="level operational">
+                <div class="level-header">
+                    <div class="level-icon">📊</div>
+                    <div class="level-title">
+                        <h2>Operational Level</h2>
+                        <p>Planning and intelligence gathering for cognitive campaigns</p>
+                    </div>
+                </div>
+                <div class="components">
+                    <div class="component-group">
+                        <h3>Cognitive Operations Planning</h3>
+                        <div class="component-item">
+                            <h4>Cognitive Campaign Design</h4>
+                            <p>Developing coordinated actions to achieve cognitive objectives</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Target Audience Analysis</h4>
+                            <p>Understanding cognitive characteristics of adversary, neutral, or friendly forces</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Message Development</h4>
+                            <p>Crafting persuasive or disruptive messages tailored to target audience</p>
+                        </div>
+                    </div>
+                    <div class="component-group">
+                        <h3>Cognitive Intelligence</h3>
+                        <div class="component-item">
+                            <h4>Cognitive Profiling</h4>
+                            <p>Building psychological and behavioral profiles of adversaries</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Cognitive Trend Analysis</h4>
+                            <p>Monitoring and analyzing trends in adversarial cognitive processes</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Cognitive Vulnerability Assessment</h4>
+                            <p>Identifying weaknesses in adversarial cognitive systems</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flow-indicator"></div>
+            
+            <!-- Tactical Level -->
+            <div class="level tactical">
+                <div class="level-header">
+                    <div class="level-icon">⚔️</div>
+                    <div class="level-title">
+                        <h2>Tactical Level</h2>
+                        <p>Direct execution of cognitive influence and defense operations</p>
+                    </div>
+                </div>
+                <div class="components">
+                    <div class="component-group">
+                        <h3>Cognitive Influence Operations</h3>
+                        <div class="component-item">
+                            <h4>Psychological Operations (PSYOP)</h4>
+                            <p>Using information and persuasion to influence adversary attitudes and behaviors</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Deception Operations</h4>
+                            <p>Creating false perceptions or beliefs to mislead adversaries</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Cognitive Disruption</h4>
+                            <p>Disrupting adversarial cognitive processes through cyber-attacks on information systems</p>
+                        </div>
+                    </div>
+                    <div class="component-group">
+                        <h3>Cognitive Defense</h3>
+                        <div class="component-item">
+                            <h4>Cognitive Resilience Training</h4>
+                            <p>Enhancing cognitive resilience of friendly forces against adversarial influence</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Cognitive Monitoring</h4>
+                            <p>Continuously monitoring cognitive state of friendly forces for vulnerabilities</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Counter-Cognitive Operations</h4>
+                            <p>Developing countermeasures to neutralize adversarial cognitive influence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flow-indicator"></div>
+            
+            <!-- Technical Support Level -->
+            <div class="level technical">
+                <div class="level-header">
+                    <div class="level-icon">🔧</div>
+                    <div class="level-title">
+                        <h2>Technical Support Level</h2>
+                        <p>Technologies and infrastructure enabling cognitive operations</p>
+                    </div>
+                </div>
+                <div class="components">
+                    <div class="component-group">
+                        <h3>Cognitive Technologies</h3>
+                        <div class="component-item">
+                            <h4>AI & Machine Learning</h4>
+                            <p>Utilizing AI/ML for cognitive profiling, trend analysis, and message development</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Big Data Analytics</h4>
+                            <p>Processing and analyzing large volumes of data to support cognitive operations</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Neuroscience & Cognitive Science</h4>
+                            <p>Applying research insights to enhance CDO capabilities</p>
+                        </div>
+                    </div>
+                    <div class="component-group">
+                        <h3>Cognitive Infrastructure</h3>
+                        <div class="component-item">
+                            <h4>Information Systems</h4>
+                            <p>Developing secure and efficient information systems to support CDO</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Communication Networks</h4>
+                            <p>Ensuring robust and secure communication networks for cognitive operations</p>
+                        </div>
+                        <div class="component-item">
+                            <h4>Data Management</h4>
+                            <p>Managing and protecting vast amounts of data generated and used in CDO</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
